@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImp implements UserService {
     private final UserRepository userRepository;
 
+    @Override
     public ResponseUser addUser(RequestUser requestUser) {
         User user = convertToEntity(requestUser);
         user = userRepository.save(user);

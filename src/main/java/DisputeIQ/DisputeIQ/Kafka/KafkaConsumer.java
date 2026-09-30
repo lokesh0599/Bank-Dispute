@@ -1,5 +1,6 @@
 package DisputeIQ.DisputeIQ.Kafka;
 
+import DisputeIQ.DisputeIQ.Dto.DisputeEvent;
 import DisputeIQ.DisputeIQ.Dto.TransactionEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -16,5 +17,11 @@ public class KafkaConsumer {
         System.out.println("Transection received: " + event.getTxnId());
     }
 
-
+    @KafkaListener(
+            topics = "dispute-created",
+            groupId = "notification-dispute"
+    )
+    public void consume(DisputeEvent event){
+        System.out.println("Dispute receive: " + event.getDisputeNumber());
+    }
 }
