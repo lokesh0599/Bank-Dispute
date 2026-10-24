@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface TransectionRepository extends MongoRepository<TransectionH, String> {
     List<TransectionH> findByUserId(String userId);
     Optional<TransectionH> findById(String id);
+
+    Optional<TransectionH> findByTxnId(String txnId);
 }

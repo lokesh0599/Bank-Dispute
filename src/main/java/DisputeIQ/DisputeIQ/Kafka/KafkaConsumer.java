@@ -15,6 +15,7 @@ public class KafkaConsumer {
     )
     public void consume(TransactionEvent event){
         System.out.println("Transection received: " + event.getTxnId());
+
     }
 
     @KafkaListener(

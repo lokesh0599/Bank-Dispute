@@ -15,6 +15,6 @@ public class ResponseTransection {
     private String txnId;
     private String date;
     private String Type;
-    private double amount;
+    private Double amount;
     private String status;
 }

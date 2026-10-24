@@ -1,19 +1,17 @@
 package DisputeIQ.DisputeIQ.Dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Data
 @Builder
-@Setter
-@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class TransactionEvent {
     private String userId;
     private String txnId;
     private String date;
     private String Type;
-    private double amount;
+    private Double amount;
     private String status;
+    private String email;
 }

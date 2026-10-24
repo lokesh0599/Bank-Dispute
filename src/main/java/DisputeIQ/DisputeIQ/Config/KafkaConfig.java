@@ -10,7 +10,8 @@ import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
-import tools.jackson.databind.annotation.JsonSerialize;
+import org.springframework.kafka.support.serializer.JacksonJsonSerializer;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,8 +19,17 @@ import java.util.Map;
 @Configuration
 public class KafkaConfig {
     @Bean
-    public NewTopic DisputeTopic(){
-        return TopicBuilder.name("DisputeTopic")
+    public NewTopic disputeTopic(){
+        return TopicBuilder.name("dispute-created")
+                .partitions(3)
+                .replicas(1)
+                .build();
+    }
+    @Bean
+    public NewTopic transactionTopic(){
+        return TopicBuilder.name("transaction-created")
+                .partitions(3)
+                .replicas(1)
                 .build();
     }
 
@@ -37,7 +47,7 @@ public class KafkaConfig {
         );
         config.put(
                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                JsonSerialize.class
+                JacksonJsonSerializer.class
         );
         return new DefaultKafkaProducerFactory<>(config);
     }
