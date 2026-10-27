@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class DisputeEvent {
-    public Long DisputeNumber;
-    public Long userId;
+    public String disputeNumber;
+    public String userId;
     public String txnId;
     public String reason;
     public Double amount;

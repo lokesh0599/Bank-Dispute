@@ -5,6 +5,7 @@ import DisputeIQ.DisputeIQ.Dto.ResponseUser;
 import DisputeIQ.DisputeIQ.Service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+
     @PostMapping("/addUser")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ResponseUser> addUser(@RequestBody RequestUser requestUser){
         return ResponseEntity.ok(userService.addUser(requestUser));
     }

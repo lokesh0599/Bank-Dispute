@@ -12,9 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
+
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -34,7 +35,7 @@ public class DisputeServiceImp implements DisputeService{
         return responseDisputes;
     }
 
-    public ResponseDispute AddDispute(RequestDispute requestDispute) throws IOException {
+    public ResponseDispute createDispute(RequestDispute requestDispute) throws IOException {
         log.info("Add Dispute Successfully");
 
         //Verify Transection id
@@ -78,24 +79,40 @@ public class DisputeServiceImp implements DisputeService{
         dispute.setTransection(transectionH1);
         dispute.setReason(requestDispute.getReason());
         dispute.setStatus(DisputeStatus.valueOf("OPEN"));
-
-        dispute.setCreateAt(requestDispute.getCreateAt());
-        dispute.setImgUrl(file.getBytes());
+        dispute.setCreateAt(LocalDateTime.now());
+        dispute.setImgUrl(file.getBytes());;
 
         Dispute saveDispute = disputeRepository.save(dispute);
         return EntityToResponse(saveDispute);
     }
+    public ResponseDispute readDisputeById(String disputeNumber){
+        Dispute dispute = disputeRepository.findById(disputeNumber)
+                .orElseThrow(() -> new RuntimeException("Id Not Found"));
+        return EntityToResponse(dispute);
+    }
+
+    public void updateDisputeStatus(String disputeNumber, String status){
+       Dispute dispute = disputeRepository.findById(disputeNumber)
+               .orElseThrow(() -> new RuntimeException("Dispute Not Found"));
+
+            dispute.setStatus(DisputeStatus.valueOf(status));
+            dispute.setResolveAt(LocalDateTime.now());
+            disputeRepository.save(dispute);
+    }
 
     public ResponseDispute EntityToResponse(Dispute dispute){
+        var txn = dispute.getTransection();
         return ResponseDispute.builder()
-                .DisputeNumber(dispute.getDisputeNumber())
-                .userId(dispute.getUserId())
-                .txnId(dispute.getTxnId())
+                .disputeNumber(dispute.getDisputeNumber())
+                .userId(txn.getUserId())
+                .txnId(txn.getTxnId())
                 .reason(dispute.getReason())
-                .amount(dispute.getAmount())
+                .amount(txn.getAmount())
                 .status(dispute.getStatus())
                 .createAt(dispute.getCreateAt())
                 .imgUrl(dispute.getImgUrl())
+                .Type(txn.getType())
+                .date(txn.getDate())
                 .build();
     }
 
